@@ -120,3 +120,14 @@ def callback_confirm(call):
             message_id=call.message.message_id,
             reply_markup=markup
         )
+
+# === Запуск FastAPI + бота паралельно ===
+def run_api():
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+def run_bot():
+    bot.polling()
+
+if __name__ == "__main__":
+    threading.Thread(target=run_api).start()
+    run_bot()
