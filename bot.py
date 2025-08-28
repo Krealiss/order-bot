@@ -68,7 +68,7 @@ async def new_order(request: Request):
 
 
 # === Обробка callback від Telegram ===
-@app.post(f"/{BOT_TOKEN}")
+@app.post(f"https://order-bot-6fop.onrender.com/{BOT_TOKEN}")
 async def telegram_webhook(request: Request):
     json_str = await request.body()
     update = telebot.types.Update.de_json(json_str.decode("utf-8"))
