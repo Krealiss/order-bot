@@ -70,10 +70,13 @@ async def new_order(request: Request):
 # === Обробка callback від Telegram ===
 @app.post(f"/{BOT_TOKEN}")
 async def telegram_webhook(request: Request):
-    json_str = await request.body()
-    update = telebot.types.Update.de_json(json_str.decode("utf-8"))
-    bot.process_new_updates([update])
-    return "!", 200
+    try:
+        json_str = await request.body()
+        update = telebot.types.Update.de_json(json_str.decode("utf-8"))
+        bot.process_new_updates([update])
+    except Exception as e:
+        print("Webhook error:", e)
+    return JSONResponse(content={"ok": True}, status_code=200)
 
 
 # === Кнопки ===
