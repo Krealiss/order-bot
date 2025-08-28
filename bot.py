@@ -68,7 +68,7 @@ async def new_order(request: Request):
 
 
 # === Обробка callback від Telegram ===
-@app.post(f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook?url=https://order-bot.onrender.com/{BOT_TOKEN}")
+@app.post(f"/{BOT_TOKEN}")
 async def telegram_webhook(request: Request):
     json_str = await request.body()
     update = telebot.types.Update.de_json(json_str.decode("utf-8"))
@@ -120,14 +120,3 @@ def callback_confirm(call):
             message_id=call.message.message_id,
             reply_markup=markup
         )
-
-# === Запуск FastAPI + бота паралельно ===
-def run_api():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
-def run_bot():
-    bot.polling()
-
-if __name__ == "__main__":
-    threading.Thread(target=run_api).start()
-    run_bot()
